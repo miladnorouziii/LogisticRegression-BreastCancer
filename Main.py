@@ -106,9 +106,9 @@ class main():
         trainDataset = CustomDataset(tensorXTrain, tensorYTrain)
         valDataset = CustomDataset(tensorXVal, tensorYVal)
         testDataset = CustomDataset(tensorXTest, tensorYTest)
-        trainLoader = DataLoader(trainDataset, batch_size=batchSize, shuffle=True).to("cuda")
-        valLoader = DataLoader(valDataset, batch_size=batchSize, shuffle=True).to("cuda")
-        testLoader = DataLoader(testDataset, batch_size=batchSize, shuffle=True).to("cuda")
+        trainLoader = DataLoader(trainDataset, batch_size=batchSize, shuffle=True)
+        valLoader = DataLoader(valDataset, batch_size=batchSize, shuffle=True)
+        testLoader = DataLoader(testDataset, batch_size=batchSize, shuffle=True)
     
 
     def startNN(self):
@@ -128,6 +128,7 @@ class main():
             print(f"Model is training on {iteration} of epochs")
             for epoch in range(iteration):
                 for inputs, labels in trainLoader:
+                    data, labels = data.to("cuda"), labels.to("cuda")
                     optimizer.zero_grad()
                     outputs = model(inputs)
                     loss = criterion(outputs, labels)
@@ -140,6 +141,7 @@ class main():
                 correct = 0
                 total = 0
                 for inputs, labels in valLoader:
+                    data, labels = data.to("cuda"), labels.to("cuda")
                     outputs = model(inputs)
                     predicted = (outputs >= 0.5).float()
                     correct += (predicted == labels).sum().item()
@@ -151,6 +153,7 @@ class main():
                 correct = 0
                 total = 0
                 for inputs, labels in testLoader:
+                    data, labels = data.to("cuda"), labels.to("cuda")
                     outputs = model(inputs)
                     predicted = (outputs >= 0.5).float()
                     correct += (predicted == labels).sum().item()
