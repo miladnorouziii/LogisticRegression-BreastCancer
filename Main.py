@@ -128,7 +128,7 @@ class main():
             print(f"Model is training on {iteration} of epochs")
             for epoch in range(iteration):
                 for inputs, labels in trainLoader:
-                    data, labels = data.to("cuda"), labels.to("cuda")
+                    inputs, labels = inputs.to("cuda"), labels.to("cuda")
                     optimizer.zero_grad()
                     outputs = model(inputs)
                     loss = criterion(outputs, labels)
@@ -141,7 +141,7 @@ class main():
                 correct = 0
                 total = 0
                 for inputs, labels in valLoader:
-                    data, labels = data.to("cuda"), labels.to("cuda")
+                    inputs, labels = inputs.to("cuda"), labels.to("cuda")
                     outputs = model(inputs)
                     predicted = (outputs >= 0.5).float()
                     correct += (predicted == labels).sum().item()
@@ -153,7 +153,7 @@ class main():
                 correct = 0
                 total = 0
                 for inputs, labels in testLoader:
-                    data, labels = data.to("cuda"), labels.to("cuda")
+                    inputs, labels = inputs.to("cuda"), labels.to("cuda")
                     outputs = model(inputs)
                     predicted = (outputs >= 0.5).float()
                     correct += (predicted == labels).sum().item()
