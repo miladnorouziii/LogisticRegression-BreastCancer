@@ -24,6 +24,7 @@ class main():
     trainLoader = valLoader = testLoader = None
     scaler = MinMaxScaler()
     optimizerType = None
+    device = None
 
     def colorText(self, text, color):
         init()
@@ -36,6 +37,7 @@ class main():
 
 
     def checkGPU(self):
+        global device
         if torch.cuda.is_available():
             print("CUDA is available")
             numberOfGpus = torch.cuda.device_count()
@@ -43,6 +45,7 @@ class main():
             for i in range (numberOfGpus):
                 gpuProperties = torch.cuda.get_device_properties(i)
                 print(f"GPU{i}: {gpuProperties.name}, (CUDA cores: {gpuProperties.multi_processor_count})")
+                device = torch.device("cuda")
             return True
         else:
             print("OOps! your GPU doesn't support required CUDA version.")
@@ -109,13 +112,13 @@ class main():
     
 
     def startNN(self):
-        if True:
+        if self.checkGPU():
             self.getDatasetPath()
             self.getUserParams()
             self.loadDataFromCsv()
             input_dim = 30
             output_dim = 1
-            model = LogisticRegression(input_dim, output_dim)
+            model = LogisticRegression(input_dim, output_dim).to(device)
             criterion = nn.BCELoss()
             if optimizerType == "SGD":
                 optimizer = torch.optim.SGD(model.parameters(), lr=learningRate)
