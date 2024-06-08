@@ -106,9 +106,9 @@ class main():
         trainDataset = CustomDataset(tensorXTrain, tensorYTrain)
         valDataset = CustomDataset(tensorXVal, tensorYVal)
         testDataset = CustomDataset(tensorXTest, tensorYTest)
-        trainLoader = DataLoader(trainDataset, batch_size=batchSize, shuffle=True)
-        valLoader = DataLoader(valDataset, batch_size=batchSize, shuffle=True)
-        testLoader = DataLoader(testDataset, batch_size=batchSize, shuffle=True)
+        trainLoader = DataLoader(trainDataset, batch_size=batchSize, shuffle=True).to("cuda")
+        valLoader = DataLoader(valDataset, batch_size=batchSize, shuffle=True).to("cuda")
+        testLoader = DataLoader(testDataset, batch_size=batchSize, shuffle=True).to("cuda")
     
 
     def startNN(self):
